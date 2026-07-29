@@ -72,6 +72,48 @@ arithmetic is stale the moment you write it. Run `check_credits` fresh instead.
 
 ---
 
+## Video — 2026-07-29
+
+| item | model | settings | credits | file |
+|---|---|---|---|---|
+| Hero loop | `seedance-2` | 5s · 1080p · sound off | **338** | `6a69cb28b3e63bc59b9aad1c` |
+| Leg 1 (01→02) | `dop/standard/first-last-frame` | 5s · 720p | **100** | `6a69cb23b3e63bc59b9aaceb` |
+
+Both completed. Video bills per second, so the `duration_multiplier: 5` in the
+breakdown is the whole story: Seedance is roughly 68 cr/s, Higgsfield DoP
+roughly 20 cr/s. **Seedance costs 3.4x per second for a clip that barely moves.**
+
+### Three findings from the pilot
+
+**1. The seam law holds, and it is verifiable.** The last frame of leg 1 and
+anchor 02 are the same image — same sofa, same ridge line, same reflection on
+the deck boards. Extract both and stack them before paying for six more legs:
+
+```bash
+ffmpeg -sseof -0.1 -i media/legs/leg_1.mp4 -vframes 1 last.png
+```
+
+**2. `aspect_ratio` in the response metadata lies. Measure the file.**
+Both generations report `"aspect_ratio": "16:9"`. The actual files:
+
+- `leg_1.mp4` → **1168x784**, which is 3:2. The first/last frame model inferred
+  the ratio from the anchors and kept it, exactly as wanted.
+- `hero_raw.mp4` → **1920x1080**, genuinely 16:9. Seedance ignored the 3:2 input
+  and cropped in. The cabin sits noticeably larger in frame than in anchor 01.
+
+Never trust the reported ratio. `ffprobe` the file.
+
+**3. The hero poster must come from the encoded video, not from the anchor.**
+Because Seedance re-cropped, a poster cut from anchor 01 no longer matches the
+first painted frame, and the hero visibly jumps the moment the video takes over.
+`scripts/encode-hero.sh` takes the poster from frame 1 of `hero-loop.mp4`, which
+makes the mismatch impossible by construction. The crop stops mattering.
+
+Encoded result: `hero-loop.mp4` at **160 KB** against a 3 MB budget — the motion
+is deliberately tiny, so x264 has almost nothing to encode.
+
+---
+
 ## Still to generate
 
 - **Hero loop** — Seedance 2.0, `generate_video_from_image` on

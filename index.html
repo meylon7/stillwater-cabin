@@ -657,6 +657,78 @@ legend { padding: 0; }
 }
 
 /* ==========================================================================
+   5b. THE FLIGHT — scroll drives the playhead
+   Scroll does not animate anything here. It moves currentTime on a video that
+   was already rendered. That is why it is smooth in both directions and needs
+   no animation library at all.
+   ========================================================================== */
+.flight {
+  position: relative;
+  height: 700vh;          /* ~20vh per second of a 35s flight */
+  background: var(--ink-deep);
+}
+.flight__stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--ink-deep) url("assets/flight_poster.jpg") center / cover no-repeat;
+}
+.flight__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.flight__caption {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 2;
+  padding-block: var(--space-2xl);
+  color: var(--sand);
+  background: linear-gradient(to top,
+    color-mix(in srgb, var(--ink-deep) 78%, transparent), transparent);
+  pointer-events: none;
+}
+.flight__caption h2 { max-width: 16ch; }
+.flight__caption .lead { color: var(--on-dark-dim); margin-top: var(--space-sm); max-width: 40ch; }
+
+/* progress hairline, so the section reads as a controlled length rather than
+   an unexplained seven screens of scrolling */
+.flight__rail {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 3;
+  height: 2px;
+  background: var(--rule-dark);
+}
+.flight__rail span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--amber);
+  transform-origin: left;
+}
+
+/* --------------------------------------------------------------------------
+   The fallbacks. Every one of them must COLLAPSE THE HEIGHT as well as hide
+   the video: a 700vh section with nothing in it is seven empty screens the
+   visitor scrolls through for no reason. That is the easiest failure to miss,
+   because it never shows up on the machine you built the site on.
+   -------------------------------------------------------------------------- */
+.flight.is-static { height: 100svh; }
+.flight.is-static .flight__video,
+.flight.is-static .flight__rail { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .flight { height: 100svh; }
+  .flight__video, .flight__rail { display: none; }
+}
+
+@media (max-width: 767px) {
+  .flight { height: 400vh; }
+}
+
+/* ==========================================================================
    6. AMENITIES — dark band
    ========================================================================== */
 .section--dark {
@@ -1397,6 +1469,25 @@ legend { padding: 0; }
     </div>
   </section>
 
+  <!-- 5b. THE FLIGHT ==================================================== -->
+  <section class="flight" id="flight" aria-labelledby="flightHeading">
+    <div class="flight__stage">
+      <!-- no autoplay, no play(). The only thing that ever moves this video
+           is currentTime, written by the scroll handler below. -->
+      <video class="flight__video" id="flightVideo"
+             muted playsinline preload="auto"
+             poster="assets/flight_poster.jpg" aria-hidden="true" tabindex="-1">
+      </video>
+
+      <div class="shell flight__caption">
+        <h2 id="flightHeading">Walk the whole place without getting up</h2>
+        <p class="lead">Keep scrolling. Every room below is the same room you just
+          saw in the photographs &mdash; the same sofa, the same island, the same tub.</p>
+      </div>
+      <div class="flight__rail" aria-hidden="true"><span id="flightRail"></span></div>
+    </div>
+  </section>
+
   <!-- 6. AMENITIES ====================================================== -->
   <section class="section section--dark" id="amenities">
     <div class="shell">
@@ -1926,6 +2017,89 @@ legend { padding: 0; }
         guests + (guests === 1 ? ' guest' : ' guests') +
         ' — those dates are open. Write to us at stay@stillwatercabin.com and we will hold them.', 'ok');
   });
+
+  /* ----------------------------------------------------------------------
+     THE FLIGHT — scroll position maps onto video.currentTime.
+
+     The video is never played. There is no autoplay and no play() call
+     anywhere in here; the only thing that moves it is currentTime.
+     ---------------------------------------------------------------------- */
+  (function flight() {
+    var section = document.querySelector('.flight');
+    var video = document.getElementById('flightVideo');
+    var rail = document.getElementById('flightRail');
+    if (!section || !video) return;
+
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var narrow = window.matchMedia('(max-width: 767px)').matches;
+    var saveData = navigator.connection && navigator.connection.saveData;
+
+    /* Fallbacks. Each one collapses the section height as well as hiding the
+       video — 700vh with nothing in it is seven empty screens. The height is
+       handled in CSS; is-static exists for the JS-detected cases. */
+    if (reduced || saveData) {
+      section.classList.add('is-static');
+      return;                       // the poster is already the stage background
+    }
+
+    var src = narrow ? 'assets/flight_mobile.mp4' : 'assets/flight_desktop.mp4';
+    video.src = src;
+
+    /* If the file never arrives, fall back rather than leaving the visitor to
+       scroll seven screens of black. */
+    video.addEventListener('error', function () { section.classList.add('is-static'); });
+
+    var target = 0, current = 0, raf = null, ready = false;
+    video.addEventListener('loadedmetadata', function () { ready = true; tick(); });
+
+    function progress() {
+      var travel = section.offsetHeight - window.innerHeight;
+      if (travel <= 0) return 0;
+      var passed = -section.getBoundingClientRect().top;
+      return Math.min(1, Math.max(0, passed / travel));
+    }
+
+    function tick() {
+      /* The lerp is not decoration. Without it every scroll event issues its
+         own seek and the browser floods the video decoder. With it, the number
+         of seeks is set by the frame rate rather than by how fast the wheel
+         spins. */
+      current += (target - current) * 0.12;
+      if (Math.abs(target - current) < 0.0004) current = target;
+
+      /* readyState >= 2 is a gate, not politeness: seeking before there is
+         data throws and leaves a black frame on screen. */
+      if (ready && video.readyState >= 2 && video.duration) {
+        var t = current * video.duration;
+        if (typeof video.fastSeek === 'function') video.fastSeek(t);
+        else video.currentTime = t;
+      }
+      if (rail) rail.style.width = (current * 100).toFixed(2) + '%';
+
+      raf = current === target ? null : requestAnimationFrame(tick);
+    }
+
+    window.addEventListener('scroll', function () {
+      target = progress();
+      if (raf === null) raf = requestAnimationFrame(tick);
+    }, { passive: true });
+
+    window.addEventListener('resize', function () {
+      target = progress();
+      if (raf === null) raf = requestAnimationFrame(tick);
+    }, { passive: true });
+
+    /* iOS will not paint a seeked frame until the video has been touched by a
+       real user gesture. One play/pause on the first touch unlocks it. */
+    window.addEventListener('touchstart', function unlock() {
+      var p = video.play();
+      if (p && p.then) p.then(function () { video.pause(); }).catch(function () {});
+      else video.pause();
+      window.removeEventListener('touchstart', unlock);
+    }, { once: true, passive: true });
+
+    target = progress();
+  })();
 
   /* ----------------------------------------------------------------------
      Gallery lightbox. <dialog> rather than a hand rolled overlay: the browser
