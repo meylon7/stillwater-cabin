@@ -1,0 +1,35 @@
+{
+  "note": "Single source of truth for every asset. Dimensions are 1024x688 because that is what GPT Image 2 returned at the 1K tier - the manifest records what the files ARE, never what we wished for. File names are locked BEFORE the files exist (lesson step 2). The placeholder generator, index.html and the flight pipeline all read these exact names.",
+  "images": [
+    { "file": "01_exterior_dock.jpg",       "w": 1024, "h": 688, "shot": "exterior, three quarter view from the dock, whole cabin in frame, lake in foreground", "usedIn": ["gallery", "flight anchor A"] },
+    { "file": "02_deck_through_glass.jpg",  "w": 1024, "h": 688, "shot": "deck, looking inward through the floor to ceiling glass",                              "usedIn": ["gallery", "flight anchor"] },
+    { "file": "03_great_room.jpg",          "w": 1024, "h": 688,  "shot": "great room, sage green sofa, lake beyond the glass",                                   "usedIn": ["spaces", "flight anchor"] },
+    { "file": "04_fireplace.jpg",           "w": 1024, "h": 688,  "shot": "blackened steel fireplace and hearth, stacked cedar",                                  "usedIn": ["amenities", "flight anchor"] },
+    { "file": "05_kitchen.jpg",             "w": 1024, "h": 688,  "shot": "kitchen, soapstone island, brushed brass fixtures",                                    "usedIn": ["spaces", "flight anchor"] },
+    { "file": "06_dining.jpg",              "w": 1024, "h": 688,  "shot": "dining nook, pale oak table, window seat",                                             "usedIn": ["gallery"] },
+    { "file": "07_primary_bedroom.jpg",     "w": 1024, "h": 688,  "shot": "primary bedroom, linen bedding, glass wall to the water",                              "usedIn": ["spaces", "flight anchor"] },
+    { "file": "08_stone_bath.jpg",          "w": 1024, "h": 688,  "shot": "stone soaking tub, cedar wall, mist outside",                                          "usedIn": ["spaces", "flight anchor"] },
+    { "file": "09_sauna.jpg",               "w": 1024, "h": 688,  "shot": "cedar sauna, low bench, small window to the lake",                                      "usedIn": ["amenities"] },
+    { "file": "10_dock_dusk.jpg",           "w": 1024, "h": 688, "shot": "dock at dusk, cedar canoe tied off, lamp glow from the cabin",                          "usedIn": ["gallery", "closing", "flight anchor H"] },
+    { "file": "11_host.jpg",                "w": 900,  "h": 1100, "shot": "hosts portrait placeholder - replaced by a real photo, not a render",                    "usedIn": ["host"] }
+  ],
+  "posters": [
+    { "file": "hero-poster.jpg",   "w": 1024, "h": 688, "from": "assets/hero-loop.mp4 frame 1" },
+    { "file": "flight_poster.jpg", "w": 1024, "h": 688, "from": "assets/flight_desktop.mp4 frame 1" }
+  ],
+  "video": [
+    { "file": "hero-loop.mp4",       "encode": "scale=1920:-2, fps=30, crf 26, preset slow, yuv420p, faststart", "budget": "< 3 MB" },
+    { "file": "flight_desktop.mp4",  "encode": "scale=1600:-2, fps=30, crf 24, keyint=5, tune fastdecode",       "budget": "8-14 MB" },
+    { "file": "flight_mobile.mp4",   "encode": "scale=960:-2, fps=24, crf 26, keyint=5, tune fastdecode",        "budget": "3-6 MB" }
+  ],
+  "gallery": ["01_exterior_dock.jpg", "02_deck_through_glass.jpg", "05_kitchen.jpg", "06_dining.jpg", "08_stone_bath.jpg", "10_dock_dusk.jpg"],
+  "flightLegs": [
+    { "leg": 1, "from": "01_exterior_dock.jpg",      "to": "02_deck_through_glass.jpg" },
+    { "leg": 2, "from": "02_deck_through_glass.jpg", "to": "03_great_room.jpg" },
+    { "leg": 3, "from": "03_great_room.jpg",         "to": "05_kitchen.jpg" },
+    { "leg": 4, "from": "05_kitchen.jpg",            "to": "04_fireplace.jpg" },
+    { "leg": 5, "from": "04_fireplace.jpg",          "to": "07_primary_bedroom.jpg" },
+    { "leg": 6, "from": "07_primary_bedroom.jpg",    "to": "08_stone_bath.jpg" },
+    { "leg": 7, "from": "08_stone_bath.jpg",         "to": "10_dock_dusk.jpg" }
+  ]
+}

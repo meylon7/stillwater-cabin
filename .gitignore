@@ -1,0 +1,8 @@
+# Raw generation output. Large, regenerable, and per-student anyway.
+media/legs/
+media/anchors/v1-materials-anchor/
+*.mp4
+
+# Local server / editor noise
+.DS_Store
+Thumbs.db

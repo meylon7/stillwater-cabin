@@ -1,0 +1,2041 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stillwater — a modern cabin on a quiet lake in the Washington Cascades</title>
+<meta name="description" content="Stillwater is a modern lakefront cabin for slow, unplugged stays in the Washington Cascades. Sleeps six, 180 feet of private shoreline, yours alone.">
+<meta name="theme-color" content="#14201d">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@200;300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ==========================================================================
+   TOKENS
+   Every colour, radius, spacing and duration on this page resolves to one of
+   these. If a value appears inline below, it is a bug.
+   ========================================================================== */
+:root {
+  /* palette */
+  --ink:      #14201d;
+  --teal:     #2f5d55;
+  --teal-dim: #4a7a70;
+  --amber:    #c98f4b;
+  --sand:     #f3ede3;
+  --paper:    #fbf8f3;
+
+  /* amber is the single accent: primary CTAs and star ratings, nowhere else */
+  --amber-ink: #3a2810;   /* text on amber, 8.9:1 */
+
+  /* one stop under --ink, for surfaces that float ON the imagery rather than
+     sit beside it. A pale card over a dark render reads as a sticker; a card
+     darker than the frame reads as part of it. */
+  --ink-deep: #0c1513;
+
+  /* derived surfaces — light context */
+  --rule:        color-mix(in srgb, var(--ink) 12%, transparent);
+  --rule-strong: color-mix(in srgb, var(--ink) 22%, transparent);
+  --muted:       color-mix(in srgb, var(--ink) 68%, var(--paper));
+
+  /* derived surfaces — dark chrome (header, booking card, closing band) */
+  --field:        color-mix(in srgb, var(--teal) 20%, var(--ink-deep));
+  --on-dark-dim:  color-mix(in srgb, var(--sand) 62%, transparent);
+  --rule-dark:    color-mix(in srgb, var(--sand) 12%, transparent);
+
+  /* type */
+  /* One family for the whole system. Heebo carries Latin and Hebrew in the
+     same design, so display and body never drift apart. With a single face
+     the hierarchy has to come from weight, size and tracking instead of from
+     a serif/sans contrast — hence the 200 weight and negative tracking on
+     display sizes below. */
+  --font-display: "Heebo", system-ui, -apple-system, sans-serif;
+  --font-body:    "Heebo", system-ui, -apple-system, sans-serif;
+
+  --t-eyebrow: 0.75rem;
+  --t-small:   0.875rem;
+  --t-body:    clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+  --t-lead:    clamp(1.125rem, 1.05rem + 0.4vw, 1.375rem);
+  --t-h3:      clamp(1.375rem, 1.25rem + 0.6vw, 1.75rem);
+  --t-h2:      clamp(2rem, 1.5rem + 2.2vw, 3.25rem);
+  --t-h1:      clamp(2.75rem, 1.9rem + 3.9vw, 5rem);
+  --track-eyebrow: 0.22em;
+
+  /* space */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs:  0.75rem;
+  --space-sm:  1rem;
+  --space-md:  1.5rem;
+  --space-lg:  2.5rem;
+  --space-xl:  4rem;
+  --space-2xl: clamp(4rem, 2rem + 8vw, 7rem);
+  --space-3xl: clamp(5rem, 2rem + 12vw, 10rem);
+
+  /* shell */
+  --shell:    1200px;
+  --gutter:   clamp(1.25rem, 4vw, 3rem);
+  --header-h: 4.75rem;
+
+  /* form */
+  --radius-sm:   6px;
+  --radius-md:   12px;
+  --radius-lg:   18px;
+  --radius-xl:   26px;
+  --radius-pill: 999px;
+
+  --shadow-card:  0 1px 2px color-mix(in srgb, var(--ink) 6%, transparent),
+                  0 12px 32px -12px color-mix(in srgb, var(--ink) 22%, transparent);
+  --shadow-float: 0 2px 4px color-mix(in srgb, var(--ink) 8%, transparent),
+                  0 28px 60px -20px color-mix(in srgb, var(--ink) 45%, transparent);
+
+  --dur-fast: 140ms;
+  --dur:      260ms;
+  --dur-slow: 520ms;
+  --ease:     cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Single-family hierarchy: the bigger the type, the lighter the weight and the
+   tighter the tracking. A 200 weight at 5rem reads as considered; the same
+   weight at 1rem reads as broken, which is why body stays at 400. */
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 200;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  margin: 0;
+  text-wrap: balance;
+}
+h1 { font-size: var(--t-h1); }
+h2 { font-size: var(--t-h2); }
+h3 {
+  font-size: var(--t-h3);
+  font-weight: 300;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+p  { margin: 0; }
+
+img, video { display: block; max-width: 100%; }
+img { height: auto; }
+
+a { color: inherit; }
+
+button, input {
+  font: inherit;
+  color: inherit;
+}
+
+/* Global, not scoped to one card. A fieldset draws a border and a legend
+   punches a notch in it by default, and every new form on the page inherits
+   that unless the reset lives here. */
+fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+legend { padding: 0; }
+
+:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+.shell {
+  width: 100%;
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--t-eyebrow);
+  font-weight: 500;
+  letter-spacing: var(--track-eyebrow);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip {
+  position: absolute;
+  top: var(--space-2xs);
+  left: var(--space-2xs);
+  z-index: 100;
+  padding: var(--space-2xs) var(--space-sm);
+  background: var(--paper);
+  border-radius: var(--radius-sm);
+  transform: translateY(-200%);
+  transition: transform var(--dur-fast) var(--ease);
+}
+.skip:focus { transform: translateY(0); }
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  padding: var(--space-xs) var(--space-md);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  font-size: var(--t-small);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--dur) var(--ease),
+              color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease);
+}
+.btn--amber {
+  background: var(--amber);
+  color: var(--amber-ink);
+}
+.btn--amber:hover {
+  background: color-mix(in srgb, var(--amber) 88%, var(--ink));
+}
+/* the cream pill: the primary action wherever the surface underneath is dark */
+.btn--paper {
+  background: var(--paper);
+  color: var(--ink);
+}
+.btn--paper:hover { background: var(--sand); }
+.btn--block { width: 100%; }
+
+/* ==========================================================================
+   HEADER
+   Transparent over the hero, solid --paper after 80px of scroll.
+   ========================================================================== */
+/* Dark chrome, always. A pale bar over these renders reads as a browser UI
+   bolted on top of the photograph; a dark bar reads as part of the frame.
+   The only thing 80px of scroll changes is how solid it is. */
+.header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  color: var(--sand);
+  background: color-mix(in srgb, var(--ink-deep) 58%, transparent);
+  backdrop-filter: blur(14px) saturate(1.1);
+  border-bottom: 1px solid transparent;
+  transition: background-color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease);
+}
+.header.is-solid {
+  background: color-mix(in srgb, var(--ink-deep) 96%, transparent);
+  border-bottom-color: var(--rule-dark);
+}
+
+.header__inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  width: 100%;
+}
+.header__mark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  font-size: 1.0625rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  margin-right: auto;
+}
+.header__mark svg {
+  width: 19px;
+  height: 19px;
+  color: var(--amber);
+  flex: none;
+}
+.header__nav {
+  display: flex;
+  gap: var(--space-md);
+}
+.header__nav a {
+  font-size: var(--t-small);
+  text-decoration: none;
+  color: var(--on-dark-dim);
+  transition: color var(--dur-fast) var(--ease);
+}
+.header__nav a:hover { color: var(--sand); }
+
+/* mobile disclosure */
+.header__toggle {
+  display: none;
+  padding: var(--space-2xs);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.header__toggle svg { width: 22px; height: 22px; }
+
+@media (max-width: 860px) {
+  .header__nav {
+    position: absolute;
+    inset: var(--header-h) 0 auto 0;
+    flex-direction: column;
+    gap: 0;
+    padding: var(--space-2xs) var(--gutter) var(--space-md);
+    background: color-mix(in srgb, var(--ink-deep) 97%, transparent);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--rule-dark);
+  }
+  .header__nav[hidden] { display: none; }
+  .header__nav a {
+    padding: var(--space-xs) 0;
+    border-bottom: 1px solid var(--rule-dark);
+    color: var(--sand);
+  }
+  .header__toggle { display: inline-flex; }
+  .header__cta { display: none; }
+}
+
+/* ==========================================================================
+   HERO
+   ========================================================================== */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  padding-block: calc(var(--header-h) + var(--space-2xl)) var(--space-2xl);
+  overflow: hidden;
+  color: var(--sand);
+  background: var(--ink) url("assets/hero-poster.jpg") center / cover no-repeat;
+}
+.hero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+/* Not a flat full-bleed overlay: the source is graded dark and this only
+   deepens the bottom third where the copy actually sits. Contrast is measured
+   against the brightest frame, not the average. */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(to top,
+      color-mix(in srgb, var(--ink) 88%, transparent) 0%,
+      color-mix(in srgb, var(--ink) 62%, transparent) 34%,
+      color-mix(in srgb, var(--ink) 12%, transparent) 68%,
+      color-mix(in srgb, var(--ink) 34%, transparent) 100%);
+}
+.hero__inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 22rem);
+  align-items: end;
+  gap: var(--space-2xl);
+  width: 100%;
+}
+.hero__eyebrow { color: var(--sand); opacity: 0.8; }
+/* The two spans carry the line break the brief asks for. No max-width: a ch
+   limit on top of them re-wraps "evening slows down." into a third line. */
+.hero h1 { margin-block: var(--space-md) var(--space-md); }
+.hero h1 span { display: block; }
+
+.stars {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  font-size: var(--t-small);
+}
+.stars__glyphs {
+  display: inline-flex;
+  gap: 2px;
+  color: var(--amber);
+}
+.stars__glyphs svg { width: 15px; height: 15px; fill: currentColor; }
+
+@media (max-width: 900px) {
+  .hero__inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-lg);
+  }
+}
+
+/* ==========================================================================
+   BOOKING WIDGET
+   Client side only. Marked as a demo, never dressed up as a real system.
+   ========================================================================== */
+.booking {
+  position: relative;
+  background: color-mix(in srgb, var(--ink-deep) 86%, transparent);
+  backdrop-filter: blur(18px) saturate(1.1);
+  color: var(--sand);
+  border: 1px solid color-mix(in srgb, var(--sand) 12%, transparent);
+  border-radius: var(--radius-xl);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-float);
+}
+/* the one amber mark on the card: a quiet corner tick, not a second button */
+.booking__mark {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  color: var(--amber);
+  width: 14px;
+  height: 14px;
+}
+.booking__legend {
+  padding: 0;
+  margin-bottom: var(--space-md);
+  padding-right: var(--space-lg);
+  font-family: var(--font-display);
+  font-size: var(--t-h3);
+  line-height: 1.18;
+}
+.booking__legend span { display: block; color: var(--on-dark-dim); }
+.booking > form { margin: 0; border: 0; padding: 0; }
+.booking fieldset { border: 0; margin: 0; padding: 0; }
+
+/* Each field is its own recessed panel with the label living inside it. The
+   label-above-a-box pattern reads as a form; label-inside-a-panel reads as a
+   single object, which is what makes the reference feel considered. */
+.field {
+  margin-bottom: var(--space-2xs);
+  padding: var(--space-2xs) var(--space-xs) var(--space-xs);
+  background: var(--field);
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  transition: border-color var(--dur-fast) var(--ease);
+}
+.field:focus-within { border-color: color-mix(in srgb, var(--amber) 45%, transparent); }
+
+.field > label,
+.field > .field__label {
+  display: block;
+  font-size: var(--t-eyebrow);
+  font-weight: 500;
+  letter-spacing: var(--track-eyebrow);
+  text-transform: uppercase;
+  color: var(--on-dark-dim);
+  margin-bottom: var(--space-3xs);
+}
+.field input[type="date"] {
+  width: 100%;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  color: var(--sand);
+  font-variant-numeric: tabular-nums;
+  min-height: 1.75rem;
+}
+/* the native picker glyph renders near-black on a dark panel without this */
+.field input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.55;
+  cursor: pointer;
+}
+.field input[type="date"]:focus-visible { outline-offset: 6px; }
+
+/* minmax(0, 1fr), not 1fr: a native date input has a wide min-content size and
+   a bare 1fr floors on it, which pushes the card past the viewport at 360. */
+.field--split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-2xs);
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+.field--split:focus-within { border-color: transparent; }
+@media (max-width: 430px) {
+  .field--split { grid-template-columns: minmax(0, 1fr); }
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xs);
+  min-height: 2rem;
+}
+.stepper__value { font-variant-numeric: tabular-nums; }
+.stepper__count {
+  min-width: 1.25rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.stepper__btn {
+  width: 1.85rem;
+  height: 1.85rem;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  color: var(--sand);
+  border: 1px solid color-mix(in srgb, var(--sand) 24%, transparent);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease);
+}
+.stepper__btn:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--sand) 12%, transparent);
+  border-color: color-mix(in srgb, var(--sand) 40%, transparent);
+}
+.stepper__btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.stepper__group { display: flex; align-items: center; gap: var(--space-2xs); }
+
+.booking__submit { margin-top: var(--space-sm); }
+.booking__submit .btn { padding-block: var(--space-sm); }
+.btn__arrow { transition: transform var(--dur) var(--ease); }
+.btn:hover .btn__arrow { transform: translateX(3px); }
+@media (prefers-reduced-motion: reduce) {
+  .btn:hover .btn__arrow { transform: none; }
+}
+
+.booking__msg {
+  margin-top: var(--space-xs);
+  font-size: var(--t-small);
+  line-height: 1.5;
+  color: var(--sand);
+}
+.booking__msg:empty { display: none; }
+.booking__msg[data-tone="error"] { color: var(--amber); }
+
+.booking__demo {
+  display: block;
+  margin-top: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px solid color-mix(in srgb, var(--sand) 12%, transparent);
+  font-size: var(--t-eyebrow);
+  letter-spacing: 0.04em;
+  color: var(--on-dark-dim);
+}
+
+/* ==========================================================================
+   SECTIONS — shared rhythm
+   ========================================================================== */
+.section { padding-block: var(--space-3xl); }
+.section--sand { background: var(--sand); }
+
+.section__head { max-width: 46rem; }
+.section__head .eyebrow { color: var(--teal-dim); margin-bottom: var(--space-sm); }
+.section__head h2 + p { margin-top: var(--space-md); }
+
+.lead {
+  font-size: var(--t-lead);
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--ink) 84%, var(--paper));
+}
+
+/* ==========================================================================
+   4. A NOTE FROM THE SHORE + STATS
+   ========================================================================== */
+.note__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: var(--space-2xl);
+  align-items: start;
+}
+.note__body h2 { max-width: 14ch; }
+.note__body p + p { margin-top: var(--space-md); }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-lg);
+  margin-top: var(--space-3xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--rule);
+  list-style: none;
+  padding-inline: 0;
+}
+.stats > li > * { margin: 0; }
+.stats__figure {
+  font-family: var(--font-display);
+  font-size: var(--t-h3);
+  line-height: 1.15;
+  margin-bottom: var(--space-2xs);
+}
+.stats__note {
+  font-size: var(--t-small);
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+  .note__body { grid-template-columns: minmax(0, 1fr); gap: var(--space-lg); }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: var(--space-2xl); }
+}
+@media (max-width: 460px) {
+  .stats { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ==========================================================================
+   5. THE SPACES
+   The first card runs full width; the remaining four sit two-up. Five cards
+   in an even grid would leave one orphan on the last row at every breakpoint.
+   ========================================================================== */
+.spaces__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-lg);
+  margin-top: var(--space-2xl);
+}
+.space:first-child { grid-column: 1 / -1; }
+.space:first-child .space__media { aspect-ratio: 21 / 9; }
+
+.space { margin: 0; }
+.space__media {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  aspect-ratio: 3 / 2;
+  background: var(--sand);
+}
+.space__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-slow) var(--ease);
+}
+.space:hover .space__media img { transform: scale(1.03); }
+@media (prefers-reduced-motion: reduce) {
+  .space:hover .space__media img { transform: none; }
+}
+
+.space__caption { padding-top: var(--space-sm); }
+.space__tag {
+  display: inline-block;
+  font-size: var(--t-eyebrow);
+  font-weight: 500;
+  letter-spacing: var(--track-eyebrow);
+  text-transform: uppercase;
+  color: var(--teal-dim);
+  margin-bottom: var(--space-3xs);
+}
+.space__caption h3 { margin-bottom: var(--space-2xs); }
+.space__caption p {
+  color: var(--muted);
+  max-width: 44ch;
+}
+
+@media (max-width: 720px) {
+  .spaces__grid { grid-template-columns: minmax(0, 1fr); }
+  .space:first-child .space__media { aspect-ratio: 3 / 2; }
+}
+
+/* ==========================================================================
+   6. AMENITIES — dark band
+   ========================================================================== */
+.section--dark {
+  background: var(--ink-deep);
+  color: var(--sand);
+}
+.section--dark .eyebrow { color: var(--on-dark-dim); }
+.section--dark .lead { color: var(--on-dark-dim); }
+
+/* the amber dot: the accent as punctuation, not as a surface */
+.eyebrow--dot {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+}
+.eyebrow--dot::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--amber);
+  flex: none;
+}
+
+/* Heading left, lead paragraph bottom-right. The gap between them is the
+   point: it lets the heading run big without the copy fighting it. */
+.amenities__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: var(--space-2xl);
+  align-items: end;
+}
+.amenities__head h2 { max-width: 11ch; }
+.amenities__head .lead { font-size: var(--t-body); }
+
+.amenities__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-md);
+  margin-top: var(--space-2xl);
+}
+
+.amenity {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background: var(--field);
+  isolation: isolate;
+}
+.amenity img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+  transition: transform var(--dur-slow) var(--ease);
+}
+.amenity::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to top,
+    color-mix(in srgb, var(--ink-deep) 92%, transparent) 0%,
+    color-mix(in srgb, var(--ink-deep) 62%, transparent) 30%,
+    transparent 62%);
+}
+.amenity:hover img { transform: scale(1.04); }
+@media (prefers-reduced-motion: reduce) {
+  .amenity:hover img { transform: none; }
+}
+
+.amenity__caption {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: var(--space-md);
+}
+.amenity__caption h3 { margin-bottom: var(--space-2xs); }
+.amenity__caption p {
+  font-size: var(--t-small);
+  line-height: 1.5;
+  color: var(--on-dark-dim);
+}
+
+/* The smaller inclusions. A flat list, deliberately: six of these do not each
+   deserve a card, and pretending otherwise is how amenity sections bloat. */
+.inclusions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs) var(--space-sm);
+  margin-top: var(--space-lg);
+  padding: var(--space-md) 0 0;
+  border-top: 1px solid var(--rule-dark);
+  list-style: none;
+}
+.inclusions li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  font-size: var(--t-small);
+  color: var(--on-dark-dim);
+}
+.inclusions li::before {
+  content: "";
+  width: 3px;
+  height: 3px;
+  border-radius: var(--radius-pill);
+  background: currentColor;
+  opacity: 0.6;
+}
+
+@media (max-width: 900px) {
+  .amenities__head { grid-template-columns: minmax(0, 1fr); gap: var(--space-lg); }
+  .amenities__head h2 { max-width: 16ch; }
+  .amenities__grid { grid-template-columns: minmax(0, 1fr); }
+  .amenity { aspect-ratio: 4 / 3; }
+}
+
+/* ==========================================================================
+   7. GALLERY — masonry + lightbox
+   CSS columns, not grid: a true masonry needs the browser to flow items into
+   the shortest column, and grid cannot do that without fixed row spans.
+   ========================================================================== */
+.gallery__grid {
+  columns: 3;
+  column-gap: var(--space-md);
+  margin-top: var(--space-2xl);
+}
+.gallery__item {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0 0 var(--space-md);
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  /* without this a column break can slice an image in half */
+  break-inside: avoid;
+  line-height: 0;
+}
+.gallery__item img {
+  width: 100%;
+  height: auto;
+  transition: transform var(--dur-slow) var(--ease), filter var(--dur) var(--ease);
+}
+.gallery__item:hover img { transform: scale(1.03); filter: brightness(1.06); }
+@media (prefers-reduced-motion: reduce) {
+  .gallery__item:hover img { transform: none; }
+}
+@media (max-width: 900px) { .gallery__grid { columns: 2; } }
+@media (max-width: 560px) { .gallery__grid { columns: 1; } }
+
+.lightbox {
+  border: 0;
+  padding: 0;
+  max-width: min(94vw, 1200px);
+  max-height: 92vh;
+  background: transparent;
+  overflow: visible;
+}
+.lightbox::backdrop { background: color-mix(in srgb, var(--ink-deep) 92%, transparent); }
+.lightbox img {
+  width: 100%;
+  height: auto;
+  max-height: 88vh;
+  object-fit: contain;
+  border-radius: var(--radius-lg);
+}
+.lightbox__close {
+  position: absolute;
+  top: calc(var(--space-md) * -1 - 0.5rem);
+  right: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: grid;
+  place-items: center;
+  background: var(--paper);
+  color: var(--ink);
+  border: 0;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+}
+.lightbox__caption {
+  margin-top: var(--space-2xs);
+  font-size: var(--t-small);
+  color: var(--on-dark-dim);
+  text-align: center;
+}
+
+/* ==========================================================================
+   8. REVIEWS
+   ========================================================================== */
+.reviews__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+.reviews__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-md);
+  margin-top: var(--space-2xl);
+}
+.review {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin: 0;
+  padding: var(--space-md);
+  background: var(--field);
+  border-radius: var(--radius-lg);
+}
+.review blockquote { margin: 0; }
+.review__stars svg { width: 13px; height: 13px; }
+.review { gap: var(--space-sm); }
+.review__foot {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  margin-top: auto;
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--rule-dark);
+}
+.review__badge {
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  flex: none;
+  background: var(--amber);
+  color: var(--amber-ink);
+  border-radius: var(--radius-pill);
+  font-size: var(--t-small);
+  font-weight: 500;
+}
+.review__name { font-size: var(--t-small); }
+.review__where { font-size: var(--t-small); color: var(--on-dark-dim); }
+
+@media (max-width: 1080px) { .reviews__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px)  { .reviews__grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* ==========================================================================
+   9. RATES
+   ========================================================================== */
+.rates__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 30rem);
+  gap: var(--space-2xl);
+  align-items: start;
+}
+/* no ch cap here: the <em> already carries the line break, and a width limit
+   on top of it splits "From $540" across two lines as well */
+.rates__price em { font-style: normal; display: block; }
+.rates__body .lead { margin-top: var(--space-md); max-width: 44ch; }
+
+.checks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-xs) var(--space-md);
+  margin-top: var(--space-lg);
+  list-style: none;
+  padding: 0;
+}
+.checks li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2xs);
+  font-size: var(--t-small);
+}
+.checks svg { width: 13px; height: 13px; color: var(--amber); flex: none; }
+
+/* the running total. A dark card so it reads as the same object as the hero
+   widget — one booking surface, shown twice. */
+.quote {
+  padding: var(--space-lg);
+  background: var(--ink-deep);
+  color: var(--sand);
+  border-radius: var(--radius-xl);
+}
+.quote h3 { margin-bottom: var(--space-3xs); }
+.quote > p { color: var(--on-dark-dim); font-size: var(--t-small); margin-bottom: var(--space-md); }
+.quote .field { background: var(--field); }
+
+.ledger {
+  margin: var(--space-md) 0 0;
+  border-top: 1px solid var(--rule-dark);
+}
+.ledger div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-top: var(--space-xs);
+}
+.ledger dt { color: var(--on-dark-dim); font-size: var(--t-small); }
+.ledger dd { margin: 0; font-variant-numeric: tabular-nums; font-size: var(--t-small); }
+.ledger .ledger__total {
+  margin-top: var(--space-xs);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--rule-dark);
+}
+.ledger__total dt,
+.ledger__total dd {
+  font-size: var(--t-lead);
+  color: var(--sand);
+}
+
+@media (max-width: 980px) {
+  .rates__body { grid-template-columns: minmax(0, 1fr); gap: var(--space-lg); }
+  .rates__price { max-width: none; }
+}
+@media (max-width: 460px) { .checks { grid-template-columns: minmax(0, 1fr); } }
+
+/* ==========================================================================
+   10. THE HOST
+   ========================================================================== */
+.host {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: stretch;
+  background: var(--paper);
+}
+.host__media { min-height: 100%; }
+.host__media img {
+  width: 100%;
+  height: 100%;
+  min-height: 32rem;
+  object-fit: cover;
+}
+.host__body {
+  align-self: center;
+  padding: var(--space-3xl) var(--gutter) var(--space-3xl) var(--space-2xl);
+  max-width: 40rem;
+}
+.host__body h2 { font-size: var(--t-h3); font-weight: 200; letter-spacing: -0.02em; }
+.host__body .lead { margin-top: var(--space-md); }
+
+.contact {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-md);
+  margin: var(--space-lg) 0 var(--space-lg);
+}
+.contact dt {
+  font-size: var(--t-eyebrow);
+  font-weight: 500;
+  letter-spacing: var(--track-eyebrow);
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: var(--space-3xs);
+}
+.contact dd { margin: 0; }
+.contact a { text-decoration: none; border-bottom: 1px solid var(--rule-strong); }
+.contact a:hover { border-bottom-color: var(--amber); }
+
+.btn--ink { background: var(--ink-deep); color: var(--sand); }
+.btn--ink:hover { background: var(--ink); }
+
+@media (max-width: 900px) {
+  .host { grid-template-columns: minmax(0, 1fr); }
+  .host__media img { min-height: 22rem; }
+  .host__body { padding: var(--space-2xl) var(--gutter); max-width: none; margin-inline: auto; }
+}
+
+/* ==========================================================================
+   11. CLOSING BAND
+   ========================================================================== */
+.closing {
+  position: relative;
+  min-height: 78svh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  overflow: hidden;
+  color: var(--sand);
+  background: var(--ink) url("assets/hero-poster.jpg") center / cover no-repeat;
+}
+.closing__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+.closing::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: color-mix(in srgb, var(--ink-deep) 52%, transparent);
+}
+.closing__inner {
+  position: relative;
+  z-index: 2;
+  padding-block: var(--space-3xl);
+  max-width: 40rem;
+}
+.closing__inner .lead { color: var(--sand); margin-block: var(--space-md) var(--space-lg); }
+
+/* ==========================================================================
+   12. FOOTER
+   ========================================================================== */
+.footer {
+  position: relative;
+  background: var(--ink-deep);
+  color: var(--sand);
+  padding-top: var(--space-2xl);
+  overflow: hidden;
+}
+.footer__cols {
+  display: grid;
+  grid-template-columns: 1.6fr repeat(3, 1fr);
+  gap: var(--space-lg);
+}
+.footer__mark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  font-size: 1.0625rem;
+  font-weight: 500;
+  text-decoration: none;
+  margin-bottom: var(--space-sm);
+}
+.footer__mark svg { width: 19px; height: 19px; color: var(--amber); }
+.footer__blurb { color: var(--on-dark-dim); font-size: var(--t-small); max-width: 28ch; }
+.footer h2 {
+  font-family: var(--font-body);
+  font-size: var(--t-eyebrow);
+  font-weight: 500;
+  letter-spacing: var(--track-eyebrow);
+  text-transform: uppercase;
+  color: var(--on-dark-dim);
+  margin-bottom: var(--space-sm);
+}
+.footer ul { list-style: none; margin: 0; padding: 0; }
+.footer li + li { margin-top: var(--space-2xs); }
+.footer a { color: var(--sand); text-decoration: none; font-size: var(--t-small); }
+.footer a:hover { color: var(--amber); }
+.footer__reach p { color: var(--sand); font-size: var(--t-small); }
+.footer__reach p + p { margin-top: var(--space-2xs); }
+
+.footer__bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--rule-dark);
+  font-size: var(--t-small);
+  color: var(--on-dark-dim);
+}
+.footer__legal { display: flex; gap: var(--space-sm); }
+.footer__credit {
+  display: inline-block;
+  margin-top: var(--space-3xs);
+  direction: rtl;
+  unicode-bidi: isolate;
+  color: color-mix(in srgb, var(--sand) 42%, transparent);
+}
+
+/* The oversized ghost wordmark. aria-hidden and clipped: it is texture, and a
+   screen reader announcing "Stillwater" a fourth time is noise. */
+.footer__ghost {
+  display: block;
+  margin: var(--space-lg) 0 calc(var(--space-2xl) * -1);
+  font-size: clamp(5rem, 18vw, 15rem);
+  font-weight: 500;
+  line-height: 0.82;
+  letter-spacing: -0.045em;
+  color: color-mix(in srgb, var(--sand) 4%, transparent);
+  user-select: none;
+  pointer-events: none;
+}
+
+@media (max-width: 860px) {
+  .footer__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 500px) {
+  .footer__cols { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   Both video sections fall back to their poster. The video element is removed
+   from the box entirely, not just paused.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .hero__video { display: none; }
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="header" id="header">
+  <div class="shell header__inner">
+    <a class="header__mark" href="#top">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5h4v5"/>
+      </svg>
+      Stillwater
+    </a>
+
+    <button class="header__toggle" type="button" id="navToggle"
+            aria-expanded="false" aria-controls="primaryNav">
+      <span class="visually-hidden">Menu</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <nav class="header__nav" id="primaryNav" aria-label="Primary">
+      <a href="#spaces">The Spaces</a>
+      <a href="#amenities">Amenities</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#host">The Host</a>
+    </nav>
+
+    <a class="btn btn--paper header__cta" href="#booking">Check availability</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- 2. HERO ============================================================ -->
+  <section class="hero" id="top">
+    <video class="hero__video" poster="assets/hero-poster.jpg"
+           muted playsinline loop autoplay preload="metadata" aria-hidden="true" tabindex="-1">
+      <source src="assets/hero-loop.mp4" type="video/mp4">
+    </video>
+
+    <div class="shell hero__inner">
+      <div>
+        <p class="eyebrow hero__eyebrow">Stillwater</p>
+        <h1><span>Where the</span><span>evening slows down.</span></h1>
+
+        <p class="stars">
+          <span class="stars__glyphs" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg>
+          </span>
+          <span>4.9 — 214 quiet stays on the lake</span>
+        </p>
+      </div>
+
+      <!-- 3. BOOKING WIDGET ---------------------------------------------- -->
+      <div class="booking" id="booking">
+        <svg class="booking__mark" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M7 17 17 7"/><path d="M8 7h9v9"/>
+        </svg>
+
+        <form id="bookingForm" novalidate>
+          <fieldset>
+            <legend class="booking__legend">Reserve the quiet,<span>the lamp stays on</span></legend>
+
+            <div class="field field--split">
+              <div class="field">
+                <label for="checkin">Check in</label>
+                <input type="date" id="checkin" name="checkin" required>
+              </div>
+              <div class="field">
+                <label for="checkout">Check out</label>
+                <input type="date" id="checkout" name="checkout" required>
+              </div>
+            </div>
+
+            <div class="field">
+              <span class="field__label" id="guestsLabel">Guests</span>
+              <div class="stepper" role="group" aria-labelledby="guestsLabel">
+                <!-- aria-hidden: the <output> below is the live value. Without
+                     this a screen reader announces the count twice. -->
+                <span class="stepper__value" id="guestsWord" aria-hidden="true">2 guests</span>
+                <span class="stepper__group">
+                  <button class="stepper__btn" type="button" id="guestsMinus" aria-label="One guest fewer">&minus;</button>
+                  <output class="stepper__count" id="guestsOut" for="guestsMinus guestsPlus">2</output>
+                  <button class="stepper__btn" type="button" id="guestsPlus" aria-label="One guest more">&plus;</button>
+                </span>
+              </div>
+            </div>
+
+            <div class="booking__submit">
+              <button class="btn btn--paper btn--block" type="submit">
+                Check availability
+                <svg class="btn__arrow" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                     stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                     stroke-linejoin="round" aria-hidden="true">
+                  <path d="M4 12h15"/><path d="m13 6 6 6-6 6"/>
+                </svg>
+              </button>
+            </div>
+          </fieldset>
+        </form>
+
+        <p class="booking__msg" id="bookingMsg" role="status" aria-live="polite"></p>
+        <small class="booking__demo">Demonstration only — no dates are held and nothing is charged.</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. A NOTE FROM THE SHORE ========================================== -->
+  <section class="section" id="note">
+    <div class="shell">
+      <div class="note__body">
+        <div class="section__head">
+          <p class="eyebrow">A note from the shore</p>
+          <h2>We built it for the hour after dinner.</h2>
+        </div>
+        <div>
+          <p class="lead">The lake goes flat around seven. The light drops out of the
+            firs, the mist comes back across the water, and the whole valley stops
+            making noise. That hour is the reason this cabin exists, and everything
+            in it is arranged to keep you in it.</p>
+          <p class="lead">No television. One road in, and it ends here. We stock the
+            kitchen, split the cedar, and leave you alone.</p>
+        </div>
+      </div>
+
+      <ul class="stats">
+        <li>
+          <p class="stats__figure">Sleeps 6</p>
+          <p class="stats__note">Three bedrooms, two baths. Nobody draws the short straw
+            and takes the sofa.</p>
+        </li>
+        <li>
+          <p class="stats__figure">180 ft of private shoreline</p>
+          <p class="stats__note">The dock, the swimming rock and the canoe are yours.
+            No shared access.</p>
+        </li>
+        <li>
+          <p class="stats__figure">40 min from the Cascades foothills</p>
+          <p class="stats__note">Close enough for a morning trailhead, far enough that
+            you hear nothing from the road.</p>
+        </li>
+        <li>
+          <p class="stats__figure">100% yours alone</p>
+          <p class="stats__note">The whole cabin, every stay. We never split it and we
+            never double book.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 5. THE SPACES ===================================================== -->
+  <section class="section section--sand" id="spaces">
+    <div class="shell">
+      <div class="section__head">
+        <p class="eyebrow">Inside Stillwater</p>
+        <h2>The spaces you'll settle into</h2>
+      </div>
+
+      <div class="spaces__grid">
+        <figure class="space">
+          <div class="space__media">
+            <img src="assets/03_great_room.jpg" alt="The great room, a sage green sofa facing a glass wall onto the lake"
+                 width="1024" height="688" loading="lazy" decoding="async">
+          </div>
+          <figcaption class="space__caption">
+            <span class="space__tag">Great room</span>
+            <h3>One wall of glass, and the lake does the rest</h3>
+            <p>A sage green sectional deep enough to lose an afternoon in, turned to
+              face the water rather than a screen. The mist rolls through at eye level
+              most mornings, and we have watched guests forget the coffee going cold
+              beside them.</p>
+          </figcaption>
+        </figure>
+
+        <figure class="space">
+          <div class="space__media">
+            <img src="assets/05_kitchen.jpg" alt="The kitchen, a soapstone island under brushed brass pendants"
+                 width="1024" height="688" loading="lazy" decoding="async">
+          </div>
+          <figcaption class="space__caption">
+            <span class="space__tag">Kitchen</span>
+            <h3>A soapstone island built for standing around</h3>
+            <p>Full range, real knives, and room for four people to cook without
+              anyone reversing into anyone. We leave salt, oil, coffee and a bottle
+              of something local.</p>
+          </figcaption>
+        </figure>
+
+        <figure class="space">
+          <div class="space__media">
+            <img src="assets/07_primary_bedroom.jpg" alt="The primary bedroom in linen, with a glass wall onto the water"
+                 width="1024" height="688" loading="lazy" decoding="async">
+          </div>
+          <figcaption class="space__caption">
+            <span class="space__tag">Primary bedroom</span>
+            <h3>You wake up level with the water</h3>
+            <p>Linen bedding, blackout curtains you probably will not close, and a
+              glass wall that puts the lake at the foot of the bed. Heated floors
+              underfoot from October.</p>
+          </figcaption>
+        </figure>
+
+        <figure class="space">
+          <div class="space__media">
+            <img src="assets/08_stone_bath.jpg" alt="A stone soaking tub against a cedar wall, mist outside the window"
+                 width="1024" height="688" loading="lazy" decoding="async">
+          </div>
+          <figcaption class="space__caption">
+            <span class="space__tag">Bath</span>
+            <h3>A stone tub, and no reason to hurry</h3>
+            <p>Carved from a single block and slow to cool, set against cedar with the
+              window right there. Fill it late and watch the fog sit on the water
+              while it does.</p>
+          </figcaption>
+        </figure>
+
+        <figure class="space">
+          <div class="space__media">
+            <img src="assets/10_dock_dusk.jpg" alt="The dock at dusk with a cedar canoe tied off and lamplight from the cabin"
+                 width="1024" height="688" loading="lazy" decoding="async">
+          </div>
+          <figcaption class="space__caption">
+            <span class="space__tag">Dock</span>
+            <h3>Where most of the evening actually happens</h3>
+            <p>Timber, wide enough to lie on, with the cedar canoe tied off at the
+              end. There is a lamp on a timer that comes up as the light goes, and
+              it is the best seat on the property.</p>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. AMENITIES ====================================================== -->
+  <section class="section section--dark" id="amenities">
+    <div class="shell">
+      <div class="amenities__head">
+        <div>
+          <p class="eyebrow eyebrow--dot">Comfort, inspired by nature</p>
+          <h2>The good stuff, all included</h2>
+        </div>
+        <p class="lead">Heat the sauna, light the fire, take the canoe out at dawn.
+          It is all here, and it is all yours. Nothing on this page costs extra.</p>
+      </div>
+
+      <div class="amenities__grid">
+        <figure class="amenity">
+          <img src="assets/09_sauna.jpg" alt="The cedar sauna, low bench and a small window facing the lake"
+               width="1024" height="688" loading="lazy" decoding="async">
+          <figcaption class="amenity__caption">
+            <h3>Cedar sauna</h3>
+            <p>Steam on the deck as the fog rolls in. Warm water, warmer light, the
+              lake going quiet.</p>
+          </figcaption>
+        </figure>
+
+        <figure class="amenity">
+          <img src="assets/04_fireplace.jpg" alt="The blackened steel fireplace with cedar stacked beside it"
+               width="1024" height="688" loading="lazy" decoding="async">
+          <figcaption class="amenity__caption">
+            <h3>Fireplace and split cedar</h3>
+            <p>Blackened steel, stacked cedar at arm's reach. We keep the rack full so
+              you never go out in the rain for it.</p>
+          </figcaption>
+        </figure>
+
+        <figure class="amenity">
+          <img src="assets/10_dock_dusk.jpg" alt="The dock at dusk with a cedar canoe tied off"
+               width="1024" height="688" loading="lazy" decoding="async">
+          <figcaption class="amenity__caption">
+            <h3>Private dock and cedar canoe</h3>
+            <p>A cedar canoe waiting at the dock. Push off before anyone else is
+              awake and the water is glass.</p>
+          </figcaption>
+        </figure>
+      </div>
+
+      <ul class="inclusions">
+        <li>Full kitchen, stocked</li>
+        <li>Fast wifi, 400 Mbps</li>
+        <li>Heated floors throughout</li>
+        <li>Washer and dryer</li>
+        <li>Filtered coffee and a grinder</li>
+        <li>Wool blankets on every bed</li>
+        <li>Board games, no television</li>
+        <li>Parking for two cars</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 7. GALLERY ======================================================== -->
+  <section class="section" id="gallery">
+    <div class="shell">
+      <div class="section__head">
+        <p class="eyebrow eyebrow--dot">The lake, all hours</p>
+        <h2>A look around</h2>
+      </div>
+
+      <div class="gallery__grid" id="galleryGrid">
+        <button class="gallery__item" type="button" data-full="assets/01_exterior_dock.jpg">
+          <img src="assets/01_exterior_dock.jpg" alt="The cabin seen from the dock on a misty morning"
+               width="1024" height="688" loading="lazy" decoding="async">
+        </button>
+        <button class="gallery__item" type="button" data-full="assets/03_great_room.jpg">
+          <img src="assets/03_great_room.jpg" alt="The great room with the sage green sectional facing the water"
+               width="1024" height="688" loading="lazy" decoding="async">
+        </button>
+        <button class="gallery__item" type="button" data-full="assets/02_deck_through_glass.jpg">
+          <img src="assets/02_deck_through_glass.jpg" alt="The deck, looking in through the glass to the great room"
+               width="1024" height="688" loading="lazy" decoding="async">
+        </button>
+        <button class="gallery__item" type="button" data-full="assets/06_dining.jpg">
+          <img src="assets/06_dining.jpg" alt="The dining nook and window seat looking out to the mist"
+               width="1024" height="688" loading="lazy" decoding="async">
+        </button>
+        <button class="gallery__item" type="button" data-full="assets/08_stone_bath.jpg">
+          <img src="assets/08_stone_bath.jpg" alt="The stone soaking tub against the cedar wall"
+               width="1024" height="688" loading="lazy" decoding="async">
+        </button>
+        <button class="gallery__item" type="button" data-full="assets/10_dock_dusk.jpg">
+          <img src="assets/10_dock_dusk.jpg" alt="The dock at dusk with the cedar canoe tied off"
+               width="1024" height="688" loading="lazy" decoding="async">
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <dialog class="lightbox" id="lightbox" aria-label="Gallery image">
+    <button class="lightbox__close" type="button" id="lightboxClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+           stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+        <path d="m6 6 12 12M18 6 6 18"/>
+      </svg>
+    </button>
+    <img id="lightboxImg" src="" alt="">
+    <p class="lightbox__caption" id="lightboxCap"></p>
+  </dialog>
+
+  <!-- 8. REVIEWS ======================================================== -->
+  <section class="section section--dark" id="reviews">
+    <div class="shell">
+      <div class="reviews__head">
+        <div>
+          <p class="eyebrow eyebrow--dot">What guests carry home</p>
+          <h2>Quiet, well kept</h2>
+        </div>
+        <p class="stars">
+          <span class="stars__glyphs" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg>
+          </span>
+          <span>4.9 average &middot; 214 stays</span>
+        </p>
+      </div>
+
+      <div class="reviews__grid">
+        <figure class="review">
+          <span class="stars__glyphs review__stars" aria-label="Five out of five"><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg></span>
+          <blockquote><p>The stillest week we have had in years. We watched the fog lift
+            off the lake with coffee every single morning and never wanted to leave.</p></blockquote>
+          <figcaption class="review__foot">
+            <span class="review__badge" aria-hidden="true">R</span>
+            <span>
+              <span class="review__name">Rebecca T.</span><br>
+              <span class="review__where">Seattle, WA</span>
+            </span>
+          </figcaption>
+        </figure>
+
+        <figure class="review">
+          <span class="stars__glyphs review__stars" aria-label="Five out of five"><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg></span>
+          <blockquote><p>Photos do not do the light justice. The sauna at dusk with the
+            mist coming in is something I will think about all winter.</p></blockquote>
+          <figcaption class="review__foot">
+            <span class="review__badge" aria-hidden="true">A</span>
+            <span>
+              <span class="review__name">Andr&eacute; P.</span><br>
+              <span class="review__where">Portland, OR</span>
+            </span>
+          </figcaption>
+        </figure>
+
+        <figure class="review">
+          <span class="stars__glyphs review__stars" aria-label="Five out of five"><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg></span>
+          <blockquote><p>Mara and Del thought of everything. Firewood stacked, pantry
+            full, canoe ready. Less a rental than being handed the keys to a friend's
+            house.</p></blockquote>
+          <figcaption class="review__foot">
+            <span class="review__badge" aria-hidden="true">G</span>
+            <span>
+              <span class="review__name">Giulia R.</span><br>
+              <span class="review__where">Vancouver, BC</span>
+            </span>
+          </figcaption>
+        </figure>
+
+        <figure class="review">
+          <span class="stars__glyphs review__stars" aria-label="Five out of five"><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.8L12 17.3 6.1 20.5l1.3-6.8L2.5 9.1l6.6-.8z"/></svg></span>
+          <blockquote><p>We came to unplug and actually managed it. Best sleep of my
+            life in that bed by the window. Already planning the return.</p></blockquote>
+          <figcaption class="review__foot">
+            <span class="review__badge" aria-hidden="true">M</span>
+            <span>
+              <span class="review__name">Marcus L.</span><br>
+              <span class="review__where">San Francisco, CA</span>
+            </span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. RATES ========================================================== -->
+  <section class="section" id="rates">
+    <div class="shell rates__body">
+      <div>
+        <p class="eyebrow eyebrow--dot">Rates and availability</p>
+        <h2 class="rates__price">From $540<em>a night</em></h2>
+        <p class="lead">One flat nightly rate for the whole cabin, two night minimum.
+          No resort fees and no per-guest charges. A single cleaning charge of $180,
+          and everything below is included.</p>
+
+        <ul class="checks">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg> The entire cabin, just yours</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg> Cedar sauna, heated nightly</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg> Firewood for stove and pit</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg> Canoe and lake access</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg> Wifi throughout, 400 Mbps</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg> Self check in, any hour</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg> Coffee and pantry staples</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg> Same day host support</li>
+        </ul>
+      </div>
+
+      <div class="quote">
+        <form id="quoteForm" novalidate>
+          <fieldset>
+            <legend>
+              <h3>Check your dates</h3>
+              <p>Nothing is held and nothing is charged.</p>
+            </legend>
+
+            <div class="field field--split">
+              <div class="field">
+                <label for="qCheckin">Check in</label>
+                <input type="date" id="qCheckin" required>
+              </div>
+              <div class="field">
+                <label for="qCheckout">Check out</label>
+                <input type="date" id="qCheckout" required>
+              </div>
+            </div>
+
+            <div class="field">
+              <span class="field__label" id="qGuestsLabel">Guests</span>
+              <div class="stepper" role="group" aria-labelledby="qGuestsLabel">
+                <span class="stepper__value" id="qGuestsWord" aria-hidden="true">2 guests</span>
+                <span class="stepper__group">
+                  <button class="stepper__btn" type="button" id="qMinus" aria-label="One guest fewer">&minus;</button>
+                  <output class="stepper__count" id="qGuestsOut" for="qMinus qPlus">2</output>
+                  <button class="stepper__btn" type="button" id="qPlus" aria-label="One guest more">&plus;</button>
+                </span>
+              </div>
+            </div>
+
+            <dl class="ledger" aria-live="polite">
+              <div><dt id="qNightsLabel">Select your dates</dt><dd id="qNightsVal">&mdash;</dd></div>
+              <div><dt>Cleaning fee</dt><dd id="qCleanVal">&mdash;</dd></div>
+              <div class="ledger__total"><dt>Total</dt><dd id="qTotalVal">&mdash;</dd></div>
+            </dl>
+
+            <div class="booking__submit">
+              <button class="btn btn--amber btn--block" type="submit">
+                Request these dates
+                <svg class="btn__arrow" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                     stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                     stroke-linejoin="round" aria-hidden="true">
+                  <path d="M4 12h15"/><path d="m13 6 6 6-6 6"/>
+                </svg>
+              </button>
+            </div>
+          </fieldset>
+        </form>
+        <p class="booking__msg" id="quoteMsg" role="status" aria-live="polite"></p>
+        <small class="booking__demo">Demonstration only &mdash; this is not a live booking system.</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. THE HOST ====================================================== -->
+  <section class="host" id="host">
+    <div class="host__media">
+      <img src="assets/01_exterior_dock.jpg" alt="The cabin and dock on a still morning"
+           width="1024" height="688" loading="lazy" decoding="async">
+    </div>
+    <div class="host__body">
+      <p class="eyebrow eyebrow--dot">Your hosts</p>
+      <h2>We're Mara and Del. We live just up the ridge, we keep the woodpile full,
+        and we will leave the lights on for you.</h2>
+      <p class="lead">We spent four winters building this place and one more learning
+        what people actually want from it. The answer was less: fewer rules, fewer
+        gadgets, more firewood.</p>
+      <p class="lead">Tell us when you are coming and what you are hoping for. A first
+        anniversary, a book to finish, a week off the grid. We answer every message
+        ourselves, usually within the hour.</p>
+
+      <dl class="contact">
+        <div>
+          <dt>Email</dt>
+          <dd><a href="mailto:stay@stillwatercabin.com">stay@stillwatercabin.com</a></dd>
+        </div>
+        <div>
+          <dt>Call or text</dt>
+          <dd><a href="tel:+13605550188">+1 (360) 555-0188</a></dd>
+        </div>
+        <div>
+          <dt>Where</dt>
+          <dd>Snoqualmie region, WA</dd>
+        </div>
+      </dl>
+
+      <a class="btn btn--ink" href="#booking">
+        Check availability
+        <svg class="btn__arrow" viewBox="0 0 24 24" width="16" height="16" fill="none"
+             stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+             stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 12h15"/><path d="m13 6 6 6-6 6"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- 11. CLOSING BAND ================================================== -->
+  <section class="closing">
+    <video class="closing__video" poster="assets/hero-poster.jpg"
+           muted playsinline loop autoplay preload="none" aria-hidden="true" tabindex="-1">
+      <source src="assets/hero-loop.mp4" type="video/mp4">
+    </video>
+    <div class="shell closing__inner">
+      <h2>Come find your quiet</h2>
+      <p class="lead">The lake is exactly this still most mornings. We saved you a
+        spot on the dock.</p>
+      <a class="btn btn--paper" href="#booking">
+        Reserve your stay
+        <svg class="btn__arrow" viewBox="0 0 24 24" width="16" height="16" fill="none"
+             stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+             stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 12h15"/><path d="m13 6 6 6-6 6"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<!-- 12. FOOTER ========================================================== -->
+<footer class="footer">
+  <div class="shell">
+    <div class="footer__cols">
+      <div>
+        <a class="footer__mark" href="#top">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5h4v5"/>
+          </svg>
+          Stillwater
+        </a>
+        <p class="footer__blurb">A modern cabin for slow, unplugged stays on a quiet
+          lake in the Washington Cascades.</p>
+      </div>
+
+      <nav aria-labelledby="footExplore">
+        <h2 id="footExplore">Explore</h2>
+        <ul>
+          <li><a href="#spaces">The Spaces</a></li>
+          <li><a href="#amenities">Amenities</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-labelledby="footStay">
+        <h2 id="footStay">Stay</h2>
+        <ul>
+          <li><a href="#rates">Rates</a></li>
+          <li><a href="#booking">Availability</a></li>
+          <li><a href="#host">The Host</a></li>
+          <li><a href="case-study.html">How this was built</a></li>
+        </ul>
+      </nav>
+
+      <div class="footer__reach">
+        <h2>Reach us</h2>
+        <p><a href="mailto:stay@stillwatercabin.com">stay@stillwatercabin.com</a></p>
+        <p><a href="tel:+13605550188">+1 (360) 555-0188</a></p>
+        <p>Snoqualmie region, WA</p>
+      </div>
+    </div>
+
+    <div class="footer__bar">
+      <p>&copy; 2026 Stillwater Cabin. Made with quiet in the Cascades.<br>
+        <span class="footer__credit">נוצר על ידי סטודיו אילון לצרכי לימוד</span></p>
+      <p class="footer__legal">
+        <a href="#top">Privacy</a>
+        <a href="#top">House rules</a>
+        <a href="#top">Cancellation</a>
+      </p>
+    </div>
+
+    <p class="footer__ghost" aria-hidden="true">Stillwater</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ----------------------------------------------------------------------
+     Header: solid after 80px. A sentinel + IntersectionObserver instead of a
+     scroll handler, so the only scroll listener on the page stays the one the
+     flight scrubber will own.
+     ---------------------------------------------------------------------- */
+  var header = document.getElementById('header');
+  var sentinel = document.createElement('div');
+  sentinel.setAttribute('aria-hidden', 'true');
+  sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:80px;pointer-events:none;';
+  document.body.prepend(sentinel);
+
+  new IntersectionObserver(function (entries) {
+    header.classList.toggle('is-solid', !entries[0].isIntersecting);
+  }, { threshold: 0 }).observe(sentinel);
+
+  /* ----------------------------------------------------------------------
+     Mobile nav disclosure
+     ---------------------------------------------------------------------- */
+  var toggle = document.getElementById('navToggle');
+  var nav = document.getElementById('primaryNav');
+  var mobile = window.matchMedia('(max-width: 860px)');
+
+  function syncNav() {
+    if (mobile.matches) {
+      nav.hidden = toggle.getAttribute('aria-expanded') !== 'true';
+    } else {
+      nav.hidden = false;
+    }
+  }
+  toggle.addEventListener('click', function () {
+    toggle.setAttribute('aria-expanded', toggle.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
+    syncNav();
+  });
+  nav.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A' && mobile.matches) {
+      toggle.setAttribute('aria-expanded', 'false');
+      syncNav();
+    }
+  });
+  mobile.addEventListener('change', function () {
+    toggle.setAttribute('aria-expanded', 'false');
+    syncNav();
+  });
+  syncNav();
+
+  /* ----------------------------------------------------------------------
+     Booking widget. Two night minimum, checkout can never precede checkin.
+     ---------------------------------------------------------------------- */
+  var MIN_NIGHTS = 2;
+  var MAX_GUESTS = 6;
+  var MIN_GUESTS = 1;
+  var DAY = 86400000;
+
+  var form = document.getElementById('bookingForm');
+  var checkin = document.getElementById('checkin');
+  var checkout = document.getElementById('checkout');
+  var msg = document.getElementById('bookingMsg');
+  var out = document.getElementById('guestsOut');
+  var minus = document.getElementById('guestsMinus');
+  var plus = document.getElementById('guestsPlus');
+  var guests = 2;
+
+  /* Local parts, not toISOString(). Every date here is a calendar day, and
+     toISOString() converts to UTC first: east of Greenwich local midnight
+     lands on the previous day and the two night minimum silently becomes one. */
+  function iso(d) {
+    return d.getFullYear() + '-' +
+           String(d.getMonth() + 1).padStart(2, '0') + '-' +
+           String(d.getDate()).padStart(2, '0');
+  }
+  function parse(v) { return v ? new Date(v + 'T00:00:00') : null; }
+  function nightsBetween(a, b) { return Math.round((b - a) / DAY); }
+
+  /* setDate, not + n * DAY. Adding milliseconds across the autumn clock change
+     lands on 23:00 the day before and drops a night. */
+  function addDays(d, n) {
+    var c = new Date(d.getTime());
+    c.setDate(c.getDate() + n);
+    return c;
+  }
+
+  var today = new Date();
+  today.setHours(0, 0, 0, 0);
+  checkin.min = iso(today);
+  checkout.min = iso(addDays(today, MIN_NIGHTS));
+
+  function say(text, tone) {
+    msg.textContent = text;
+    if (tone) { msg.dataset.tone = tone; } else { delete msg.dataset.tone; }
+  }
+
+  /* Checkout can only ever offer dates that already satisfy the minimum, so
+     the invalid range is unreachable rather than merely rejected. */
+  checkin.addEventListener('change', function () {
+    var inDate = parse(checkin.value);
+    if (!inDate) return;
+    var earliest = addDays(inDate, MIN_NIGHTS);
+    checkout.min = iso(earliest);
+    var outDate = parse(checkout.value);
+    if (!outDate || outDate < earliest) checkout.value = iso(earliest);
+    say('');
+  });
+
+  checkout.addEventListener('change', function () { say(''); });
+
+  var guestsWord = document.getElementById('guestsWord');
+
+  function syncGuests() {
+    out.textContent = String(guests);
+    guestsWord.textContent = guests + (guests === 1 ? ' guest' : ' guests');
+    minus.disabled = guests <= MIN_GUESTS;
+    plus.disabled = guests >= MAX_GUESTS;
+  }
+  minus.addEventListener('click', function () { if (guests > MIN_GUESTS) { guests--; syncGuests(); } });
+  plus.addEventListener('click', function () { if (guests < MAX_GUESTS) { guests++; syncGuests(); } });
+  syncGuests();
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var inDate = parse(checkin.value);
+    var outDate = parse(checkout.value);
+
+    if (!inDate || !outDate) {
+      say('Pick both dates and we will look them up.', 'error');
+      return;
+    }
+    if (outDate <= inDate) {
+      say('Check out needs to fall after check in.', 'error');
+      checkout.focus();
+      return;
+    }
+    var nights = nightsBetween(inDate, outDate);
+    if (nights < MIN_NIGHTS) {
+      say('We ask for ' + MIN_NIGHTS + ' nights at least. One night never feels like enough here.', 'error');
+      checkout.focus();
+      return;
+    }
+
+    say(nights + (nights === 1 ? ' night' : ' nights') + ' for ' +
+        guests + (guests === 1 ? ' guest' : ' guests') +
+        ' — those dates are open. Write to us at stay@stillwatercabin.com and we will hold them.', 'ok');
+  });
+
+  /* ----------------------------------------------------------------------
+     Gallery lightbox. <dialog> rather than a hand rolled overlay: the browser
+     already gives us the backdrop, Escape, focus trapping and focus restore.
+     ---------------------------------------------------------------------- */
+  var grid = document.getElementById('galleryGrid');
+  var box = document.getElementById('lightbox');
+  var boxImg = document.getElementById('lightboxImg');
+  var boxCap = document.getElementById('lightboxCap');
+
+  grid.addEventListener('click', function (e) {
+    var item = e.target.closest('.gallery__item');
+    if (!item) return;
+    var img = item.querySelector('img');
+    boxImg.src = item.dataset.full;
+    boxImg.alt = img.alt;
+    boxCap.textContent = img.alt;
+    box.showModal();
+  });
+
+  document.getElementById('lightboxClose').addEventListener('click', function () { box.close(); });
+  /* clicking the backdrop closes: the ::backdrop pseudo element reports the
+     dialog itself as the target, so anything outside the image counts */
+  box.addEventListener('click', function (e) { if (e.target === box) box.close(); });
+  box.addEventListener('close', function () { boxImg.removeAttribute('src'); });
+
+  /* ----------------------------------------------------------------------
+     Rates calculator. Same rules as the hero widget, plus a live total.
+     ---------------------------------------------------------------------- */
+  var RATE = 540;
+  var CLEANING = 180;
+
+  var qForm = document.getElementById('quoteForm');
+  var qIn = document.getElementById('qCheckin');
+  var qOut = document.getElementById('qCheckout');
+  var qMinus = document.getElementById('qMinus');
+  var qPlus = document.getElementById('qPlus');
+  var qCount = document.getElementById('qGuestsOut');
+  var qWord = document.getElementById('qGuestsWord');
+  var qMsg = document.getElementById('quoteMsg');
+  var qNightsLabel = document.getElementById('qNightsLabel');
+  var qNightsVal = document.getElementById('qNightsVal');
+  var qCleanVal = document.getElementById('qCleanVal');
+  var qTotalVal = document.getElementById('qTotalVal');
+  var qGuests = 2;
+
+  qIn.min = iso(today);
+  qOut.min = iso(addDays(today, MIN_NIGHTS));
+
+  function money(n) { return '$' + n.toLocaleString('en-US'); }
+
+  function recalc() {
+    var a = parse(qIn.value), b = parse(qOut.value);
+    var nights = (a && b) ? nightsBetween(a, b) : 0;
+
+    if (nights < MIN_NIGHTS) {
+      qNightsLabel.textContent = 'Select your dates';
+      qNightsVal.textContent = '—';
+      qCleanVal.textContent = '—';
+      qTotalVal.textContent = '—';
+      return;
+    }
+    qNightsLabel.textContent = money(RATE) + ' × ' + nights + (nights === 1 ? ' night' : ' nights');
+    qNightsVal.textContent = money(RATE * nights);
+    qCleanVal.textContent = money(CLEANING);
+    qTotalVal.textContent = money(RATE * nights + CLEANING);
+  }
+
+  qIn.addEventListener('change', function () {
+    var a = parse(qIn.value);
+    if (a) {
+      var earliest = addDays(a, MIN_NIGHTS);
+      qOut.min = iso(earliest);
+      var b = parse(qOut.value);
+      if (!b || b < earliest) qOut.value = iso(earliest);
+    }
+    qMsg.textContent = '';
+    recalc();
+  });
+  qOut.addEventListener('change', function () { qMsg.textContent = ''; recalc(); });
+
+  function syncQGuests() {
+    qCount.textContent = String(qGuests);
+    qWord.textContent = qGuests + (qGuests === 1 ? ' guest' : ' guests');
+    qMinus.disabled = qGuests <= MIN_GUESTS;
+    qPlus.disabled = qGuests >= MAX_GUESTS;
+  }
+  qMinus.addEventListener('click', function () { if (qGuests > MIN_GUESTS) { qGuests--; syncQGuests(); } });
+  qPlus.addEventListener('click', function () { if (qGuests < MAX_GUESTS) { qGuests++; syncQGuests(); } });
+  syncQGuests();
+  recalc();
+
+  qForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var a = parse(qIn.value), b = parse(qOut.value);
+    if (!a || !b) {
+      qMsg.textContent = 'Pick both dates and the total works itself out.';
+      qMsg.dataset.tone = 'error';
+      return;
+    }
+    if (nightsBetween(a, b) < MIN_NIGHTS) {
+      qMsg.textContent = 'We ask for ' + MIN_NIGHTS + ' nights at least.';
+      qMsg.dataset.tone = 'error';
+      return;
+    }
+    delete qMsg.dataset.tone;
+    qMsg.textContent = 'Those dates are open. Send the total to stay@stillwatercabin.com and we will confirm it today.';
+  });
+})();
+</script>
+
+</body>
+</html>
