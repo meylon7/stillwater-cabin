@@ -129,7 +129,7 @@ It also doubles as the proof that the seam law held across all seven joints.
 
 ---
 
-## The hero, twice
+## The hero, three times
 
 **v1 was a 338-credit still image.** The prompt carried four negations and one
 positive word, `subtle`. The model obeyed all of it, including the part we did
@@ -161,8 +161,33 @@ loop seam  first vs last : 5.99 -> 1.76    down to the compression noise floor
 peak motion first vs mid : 6.11            motion fully preserved
 ```
 
-Two apparently opposed goals, both met, both measured. 528 KB against a 3 MB
-budget.
+Two apparently opposed goals, both met, both measured.
+
+**v3 shipped, and it is the one worth remembering.** Even with mist, ripple and
+swaying branches, the hero still read as a photograph with some vapour on it.
+What tells an eye it is watching video is **camera** motion, not world motion.
+
+The `no camera move` line we had been carrying since the brief was never an
+aesthetic choice — it was a workaround for looping. A travelling camera does
+not return, the last frame sits far from the first, the loop pops. But
+ping-pong already solves exactly that: the reverse half walks the camera back
+frame for frame. **The prohibition had outlived its reason and was still
+costing us.**
+
+A 15% dolly, same model, same 100 credits:
+
+```text
+                 frame drift    loop seam
+locked off            5.99         1.76
+15% dolly            37.22         1.97
+```
+
+Six times the motion, loop still clean, and push-pull is a nicer hero move than
+a one-way push anyway. 1,136 KB against a 3 MB budget.
+
+The general lesson: **when you add a mechanism, go back and ask which old
+constraints it just made unnecessary.** A constraint that outlives its reason
+keeps charging you and stops appearing in the reasoning.
 
 ---
 
