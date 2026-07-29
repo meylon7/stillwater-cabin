@@ -58,16 +58,17 @@ scripts/
 - [x] שלב 2 — header + hero + ווידג'ט הזמנות
 - [x] שלב 3א — 10 הרנדרים (GPT Image 2, שני סבבים, 160 קרדיטים)
 - [x] שלב 4 — intro, סטטיסטיקות, The Spaces
-- [ ] שלב 5 — amenities, גלריה, לייטבוקס, reviews
-- [ ] שלב 6 — rates, host, closing band, footer
-- [ ] שלב 7 — encode-hero.sh + וידאו ההירו
-- [ ] שלב 8 — סקשן הטיסה ומנוע הסקראב
-- [ ] שלב 9 — 7 הרגליים + build-flight.sh
+- [x] שלב 5 — amenities, גלריה, לייטבוקס, reviews
+- [x] שלב 6 — rates, host, closing band, footer
+- [x] שלב 7 — encode-hero.sh + וידאו ההירו
+- [x] שלב 8 — סקשן הטיסה ומנוע הסקראב
+- [x] שלב 9 — 7 הרגליים + build-flight.sh
 - [ ] שלב 10 — case-study.html
 
-עשרת הרנדרים אמיתיים (GPT Image 2, 1024x688). `11_host.jpg` עדיין פלייסהולדר
+כל המדיה אמיתית. **הרצה מקומית חייבת שרת שתומך ב-HTTP Range** —
+`python scripts/serve.py` ואז <http://localhost:8080>. עם `python -m http.server`\nהסקראב מת בשקט. עשרת הרנדרים ב-1024x688. `11_host.jpg` עדיין פלייסהולדר
 מוצהר — צריך תמונה של אנשים אמיתיים, לא רנדר.
-`hero-loop.mp4` ו-`flight_*.mp4` עדיין לא קיימים. הדף נופל לפוסטר עד שהם יגיעו.
+
 
 הרנדרים מיוצרים ב-Kolbo. ראה [.kolbo/production.md](.kolbo/production.md) ליומן
 ההרצות, ל-generation ids ולעלות בפועל.

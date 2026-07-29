@@ -39,9 +39,12 @@ done
 # ---------------------------------------------------------------------------
 # 2. Concat
 # ---------------------------------------------------------------------------
+# Bare file names, not absolute paths. The concat demuxer resolves entries
+# relative to the list file, and an absolute POSIX path from Git Bash reaches
+# a Windows ffmpeg as "E:/e/..." and fails to open.
 : > "$WORK/list.txt"
 for i in 1 2 3 4 5 6 7; do
-  printf "file '%s'\n" "$WORK/trimmed_leg_$i.mp4" >> "$WORK/list.txt"
+  printf "file 'trimmed_leg_%d.mp4'\n" "$i" >> "$WORK/list.txt"
 done
 
 ffmpeg -y -loglevel error -f concat -safe 0 -i "$WORK/list.txt" \
@@ -94,14 +97,25 @@ printf '  %-22s %6s KB\n' "flight_poster.jpg" "$(du -k "$ASSETS/flight_poster.jp
 # A silent failure here looks exactly like "scroll feels janky on some
 # machines", which is the hardest kind of bug to chase later.
 # ---------------------------------------------------------------------------
-GAP=$(ffprobe -v error -select_streams v:0 -show_entries frame=key_frame \
-        -of csv=p=0 -read_intervals '%+#40' "$ASSETS/flight_desktop.mp4" \
-      | grep -n '^1$' | head -2 | cut -d: -f1 | paste -sd- - | bc | tr -d -)
+# Pure shell arithmetic, no bc: Git Bash does not ship it, and a missing
+# dependency here silently skips the one check that matters.
+KEYS=$(ffprobe -v error -select_streams v:0 -show_entries frame=key_frame \
+         -of csv=p=0 -read_intervals '%+#40' "$ASSETS/flight_desktop.mp4" \
+       | grep -n '^1$' | cut -d: -f1)
 
-if [ "${GAP:-0}" -le 5 ] && [ "${GAP:-0}" -gt 0 ]; then
-  echo "Keyframe interval: $GAP frames  OK"
+FIRST=$(echo "$KEYS" | sed -n '1p')
+SECOND=$(echo "$KEYS" | sed -n '2p')
+COUNT=$(echo "$KEYS" | grep -c .)
+
+if [ -n "$SECOND" ]; then
+  GAP=$((SECOND - FIRST))
+  if [ "$GAP" -le 5 ] && [ "$GAP" -gt 0 ]; then
+    echo "Keyframes: every $GAP frames, $COUNT in the first 40  OK"
+  else
+    echo "WARNING: keyframe gap is $GAP, expected 5. Scrubbing will step." >&2
+  fi
 else
-  echo "WARNING: keyframe interval reads as '${GAP:-?}', expected 5. Scroll will step." >&2
+  echo "WARNING: fewer than two keyframes in the first 40 frames. keyint did not apply." >&2
 fi
 
 echo

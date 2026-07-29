@@ -2049,8 +2049,18 @@ legend { padding: 0; }
        scroll seven screens of black. */
     video.addEventListener('error', function () { section.classList.add('is-static'); });
 
-    var target = 0, current = 0, raf = null, ready = false;
-    video.addEventListener('loadedmetadata', function () { ready = true; tick(); });
+    var target = 0, current = 0, raf = null;
+
+    /* No `ready` flag. An earlier version set one from a loadedmetadata
+       listener attached just after video.src, which raced: metadata could
+       arrive before the listener, the flag stayed false, and every seek was
+       skipped forever. The symptom was cruel — the progress rail tracked the
+       scroll perfectly while the picture never moved, because the rail is
+       written after the seek block.
+       readyState is already the source of truth. Read it directly. */
+    video.addEventListener('loadedmetadata', kick);
+    video.addEventListener('loadeddata', kick);
+    function kick() { if (raf === null) raf = requestAnimationFrame(tick); }
 
     function progress() {
       var travel = section.offsetHeight - window.innerHeight;
@@ -2068,8 +2078,9 @@ legend { padding: 0; }
       if (Math.abs(target - current) < 0.0004) current = target;
 
       /* readyState >= 2 is a gate, not politeness: seeking before there is
-         data throws and leaves a black frame on screen. */
-      if (ready && video.readyState >= 2 && video.duration) {
+         data throws and leaves a black frame on screen. isFinite guards the
+         NaN duration a stream reports before metadata lands. */
+      if (video.readyState >= 2 && isFinite(video.duration)) {
         var t = current * video.duration;
         if (typeof video.fastSeek === 'function') video.fastSeek(t);
         else video.currentTime = t;
