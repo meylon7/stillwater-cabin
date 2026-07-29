@@ -468,6 +468,43 @@ peak motion first vs mid : 6.11    התנועה נשמרה במלואה
 
 **שני יעדים סותרים לכאורה, שניהם הושגו, ושניהם נמדדו.**
 
+**הדגש שנגזר מזה, והוא החשוב מכולם: פינג-פונג מבטל את האיסור על תנועת מצלמה**
+
+הכלל שהתחלנו איתו — `No zoom in, no zoom out, no camera move` — לא היה כלל
+אסתטי. הוא היה **פתרון עוקף למגבלת הלופ.** מצלמה שנעה לא חוזרת לנקודת ההתחלה,
+הפריים האחרון רחוק מהראשון, והלופ קופץ. אז אסרנו תנועה.
+
+אבל אחרי שקידוד פינג-פונג נכנס, המגבלה הזו כבר לא קיימת — הוא מחזיר את המצלמה
+בדיוק לאותו מקום, פריים אחר פריים. **האיסור שרד את הסיבה שלו.**
+
+וזה בדיוק מה שהיה חסר. גם אחרי שהוספנו ערפל, אדוות וענפים, ההירו עדיין נקרא
+כתמונה עם קצת אדים, כי **מה שמסגיר וידאו לעין הוא תנועת מצלמה, לא תנועת עולם.**
+הוספנו דולי איטי של חמישה עשר אחוז:
+
+```prompt
+The camera pushes forward slowly and steadily toward the cabin across the
+water, a smooth continuous dolly of about fifteen percent over five seconds.
+Thick low mist rolls across the lake from right to left, passing in front of
+the dock. The water ripples the whole time and the cabin's reflection breaks up
+and reforms. The fir branches sway in the wind. Warm interior light spills
+across the deck. Continuous motion from the first frame to the last, never
+static.
+```
+
+התוצאה, באותה מדידה ובאותו מחיר:
+
+```text
+                 סחיפת פריים    תפר הלופ
+מצלמה נעולה          5.99         1.76
+דולי 15%            37.22         1.97
+```
+
+**פי שישה יותר תנועה, והלופ נשאר נקי.** הפינג-פונג הפך את הדחיפה
+לדחיפה-ומשיכה, שהיא ממילא תנועת הירו יפה יותר מדחיפה חד כיוונית.
+
+הלקח הכללי: **כשאתה מוסיף מנגנון, תחזור ותשאל אילו אילוצים ישנים הוא ייתר.**
+אילוץ ששרד את הסיבה שלו עולה לך בלי שתשים לב.
+
 הקידוד:
 
 ```bash

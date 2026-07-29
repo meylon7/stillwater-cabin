@@ -77,7 +77,8 @@ arithmetic is stale the moment you write it. Run `check_credits` fresh instead.
 | item | model | settings | credits | generation | note |
 |---|---|---|---|---|---|
 | Hero loop v1 | `seedance-2` | 5s · 1080p | **338** | `6a69cb28b3e63bc59b9aad1c` | discarded, no motion |
-| Hero loop v2 | `seedance-2-fast` | 5s · 720p | **100** | `6a69d608b3e63bc59b9b053f` | shipped |
+| Hero loop v2 | `seedance-2-fast` | 5s · 720p | **100** | `6a69d608b3e63bc59b9b053f` | discarded, motion still too subtle |
+| Hero loop v3 | `seedance-2-fast` | 5s · 720p | **100** | `6a69dd0312e5571280eee1e9` | shipped, slow dolly |
 | Legs 1-7 | `dop/standard/first-last-frame` | 5s · 720p each | **700** | 7 generations | 2 extra 400s, not charged |
 
 Both completed. Video bills per second, so the `duration_multiplier: 5` in the
@@ -171,9 +172,10 @@ budget.
 |---|---|
 | 20 renders, two anchor passes | 160 |
 | Hero v1, discarded | 338 |
-| Hero v2, shipped | 100 |
+| Hero v2, discarded | 100 |
+| Hero v3, shipped | 100 |
 | 7 flight legs | 700 |
-| **Total** | **1,298** |
+| **Total** | **1,398** |
 
 Two `400` failures were not charged. Do not compute a remaining balance by
 subtraction — chat and coding spend credits too. Run `check_credits` fresh.
