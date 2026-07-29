@@ -76,8 +76,9 @@ arithmetic is stale the moment you write it. Run `check_credits` fresh instead.
 
 | item | model | settings | credits | file |
 |---|---|---|---|---|
-| Hero loop | `seedance-2` | 5s · 1080p · sound off | **338** | `6a69cb28b3e63bc59b9aad1c` |
-| Leg 1 (01→02) | `dop/standard/first-last-frame` | 5s · 720p | **100** | `6a69cb23b3e63bc59b9aaceb` |
+| Hero loop v1 | `seedance-2` | 5s · 1080p | **338** | `6a69cb28b3e63bc59b9aad1c` | discarded, no motion |
+| Hero loop v2 | `seedance-2-fast` | 5s · 720p | **100** | `6a69d608b3e63bc59b9b053f` | shipped |
+| Legs 1-7 | `dop/standard/first-last-frame` | 5s · 720p each | **700** | 7 generations | 2 extra 400s, not charged |
 
 Both completed. Video bills per second, so the `duration_multiplier: 5` in the
 breakdown is the whole story: Seedance is roughly 68 cr/s, Higgsfield DoP
