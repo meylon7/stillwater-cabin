@@ -74,8 +74,8 @@ arithmetic is stale the moment you write it. Run `check_credits` fresh instead.
 
 ## Video — 2026-07-29
 
-| item | model | settings | credits | file |
-|---|---|---|---|---|
+| item | model | settings | credits | generation | note |
+|---|---|---|---|---|---|
 | Hero loop v1 | `seedance-2` | 5s · 1080p | **338** | `6a69cb28b3e63bc59b9aad1c` | discarded, no motion |
 | Hero loop v2 | `seedance-2-fast` | 5s · 720p | **100** | `6a69d608b3e63bc59b9b053f` | shipped |
 | Legs 1-7 | `dop/standard/first-last-frame` | 5s · 720p each | **700** | 7 generations | 2 extra 400s, not charged |
@@ -110,16 +110,70 @@ first painted frame, and the hero visibly jumps the moment the video takes over.
 `scripts/encode-hero.sh` takes the poster from frame 1 of `hero-loop.mp4`, which
 makes the mismatch impossible by construction. The crop stops mattering.
 
-Encoded result: `hero-loop.mp4` at **160 KB** against a 3 MB budget — the motion
-is deliberately tiny, so x264 has almost nothing to encode.
+**4. Two more findings from the full run of seven legs.**
+
+*Concurrency.* Six legs fired at once; the last two came back `400`. That is not
+a bad request, it is the video concurrency ceiling — roughly 3 to 5 in flight,
+against about 10 for images — reported as an input error. The symptom sends you
+to check the anchor URLs instead of the rate. Failures were not charged.
+
+*The CDN served wrong objects for correct URLs.* Two legs downloaded as byte
+duplicates of two others. Nothing downstream would have caught it: `concat`
+stitches whatever order it is handed and the flight simply teleports mid-move.
+Adding `Cache-Control: no-cache` to the request fixed the fetch, but the real
+answer is to stop trusting file names. `scripts/identify-legs.ps1` matches every
+clip's first and last frame against all ten anchors — same image scores 1.1-3.9,
+a different room scores 40+, so the verdict is arithmetic rather than judgement.
+It also doubles as the proof that the seam law held across all seven joints.
 
 ---
 
-## Still to generate
+## The hero, twice
 
-- **Hero loop** — Seedance 2.0, `generate_video_from_image` on
-  `media/anchors/01_exterior_dock.png`. Prompt in `PROMPTS.md` section 3.
-- **7 flight legs** — `generate_first_last_frame`, anchors per `PROMPTS.md`
-  section 4. Video bills per second: 7 legs x 5s x the model's cr/s rate.
-  Check `list_models type="firstlastgenerations"` and confirm the total before
-  firing — this is the expensive half of the project by a wide margin.
+**v1 was a 338-credit still image.** The prompt carried four negations and one
+positive word, `subtle`. The model obeyed all of it, including the part we did
+not mean. Frame drift over five seconds: **1.77 out of 255**.
+
+The lesson's own rule — short prompts win with video models — is right about
+*camera* motion and wrong about *world* motion. Negations restrain the camera;
+only concrete verbs with a quantity move anything.
+
+**v2 shipped.** One negation for the camera, then verbs: mist crossing a third
+of the frame in five seconds, continuous ripple, branches swaying, interior
+lights flickering. Drift: **5.99**. Cost **100** on `seedance-2-fast` at 720p
+against 338 on `seedance-2` at 1080p — 20 cr/s versus 68 — for a clip whose
+entire content is drifting mist.
+
+**And that fix exposed a bug the broken version had been hiding.** A hero
+carries `loop`, so the last frame is followed immediately by the first. Real
+motion means they no longer match, and there is a visible pop every cycle. v1
+looped cleanly only because there was nothing to see.
+
+The fix belongs in the encode, not the prompt: play the clip forward, then
+reversed. The join then lands on a frame identical to itself on both sides.
+`trim=start_frame=1` on the reversed half is required — without it the shared
+frame plays twice and the motion stalls, the same reasoning as dropping the
+duplicated frame at each flight seam.
+
+```text
+loop seam  first vs last : 5.99 -> 1.76    down to the compression noise floor
+peak motion first vs mid : 6.11            motion fully preserved
+```
+
+Two apparently opposed goals, both met, both measured. 528 KB against a 3 MB
+budget.
+
+---
+
+## Totals
+
+| | credits |
+|---|---|
+| 20 renders, two anchor passes | 160 |
+| Hero v1, discarded | 338 |
+| Hero v2, shipped | 100 |
+| 7 flight legs | 700 |
+| **Total** | **1,298** |
+
+Two `400` failures were not charged. Do not compute a remaining balance by
+subtraction — chat and coding spend credits too. Run `check_credits` fresh.
